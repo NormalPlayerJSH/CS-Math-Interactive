@@ -16,6 +16,7 @@ export default function FullPage() {
   ]);
   const [Status, setStatus] = useState<'start' | 'loading' | 'data'>('start')
   const [Data, setData] = useState<null | PythonReturnI>(null);
+  const [ShowBig, setShowBig] = useState(false);
 
   const haveImage = Status !== 'start';
 
@@ -47,6 +48,19 @@ export default function FullPage() {
 
   return (
     <div className=" w-screen h-screen flex flex-row bg-[#1e1e1e] text-white overflow-hidden">
+      {
+        ShowBig && (
+          <button className=" w-full h-full bg-black bg-opacity-80 absolute hover:cursor-pointer z-10" onClick={() => setShowBig(false)}>
+            <div className="w-full h-full flex-shrink-0 relative">
+              {
+                Status === 'data' && Data && (
+                  <Image src={`data:image/png;base64,${Data.image}`} alt="" layout="fill" objectFit="contain"></Image>
+                )
+              }
+            </div>
+          </button>
+        )
+      }
       <div className="w-1/4 h-full border-r-4 border-gray-400 p-3 grid gap-3 min-w-[400px]"
       style={{
         gridTemplateRows: `64px 40px 1fr${haveImage ? ' auto': ''}`
@@ -83,13 +97,13 @@ export default function FullPage() {
         </div>
         {
           haveImage && (
-          <div className="w-full aspect-square bg-white flex-shrink-0 relative">
+          <button className="w-full aspect-square bg-white flex-shrink-0 relative hover:cursor-pointer" onClick={() => setShowBig(true)}>
              {
               Status === 'data' && Data && (
                 <Image src={`data:image/png;base64,${Data.image}`} alt="" layout="fill"></Image>
               )
              }
-          </div>
+          </button>
           )
         }
         
